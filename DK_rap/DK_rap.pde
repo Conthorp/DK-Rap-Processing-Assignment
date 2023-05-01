@@ -19,6 +19,7 @@ void setup()
   DonkeyKongText = loadShape("DKtext.obj");
   
   minim = new Minim(this);
+  ai = minim.getLineIn(Minim.MONO, 512, 44100, 16);
   ap = minim.loadFile("Y2Mate.is - Donkey Kong 64 (N64) - DK Rap Introduction-npuuTBlEb1U-160k-1656653848268.mp3", width);
   ab = ap.mix;
   colorMode(HSB);
@@ -37,6 +38,9 @@ boolean start = false;
 boolean play = false;
 
 float countdown = 0;
+
+float average = 0;
+float lerpedAverage = 0;
 
 void keyPressed()
 {
@@ -96,10 +100,10 @@ void Text1()
 {
   
   pushMatrix();
-
+  
   lights();
   translate(width / 10, height / 25, 0);
-  scale((height / 50) * 4);
+  scale(lerpedAverage * 1000);
   shape(DonkeyKongText);
   
   popMatrix();
@@ -113,7 +117,7 @@ void Text2()
   
   lights();
   translate(width / 10, (height / 25) * 21, 0);
-  scale((height / 50) * 4);
+  scale(lerpedAverage * 1000);
   shape(DonkeyKongText);
   
   popMatrix();
@@ -127,7 +131,7 @@ void Text3()
   
   lights();
   translate((width / 10) * 9, (height / 25) * 21, 0);
-  scale((height / 50) * 4);
+  scale(lerpedAverage * 1000);
   shape(DonkeyKongText);
   
   popMatrix();
@@ -141,7 +145,7 @@ void Text4()
   
   lights();
   translate((width / 10) * 9, height / 25, 0);
-  scale((height / 50) * 4);
+  scale(lerpedAverage * 1000);
   shape(DonkeyKongText);
   
   popMatrix();
@@ -153,6 +157,7 @@ void draw()
   
   background(0, 0, 0);
   
+
   
   if (start)
   {
@@ -189,6 +194,19 @@ void draw()
       Text2();
       Text3();
       Text4();
+      
+      float total = 0;
+  
+      for(int i = 0; i < ab.size(); i++)
+      {
+    
+        total += abs(ab.get(i));
+    
+      }
+  
+      average = total / (float) ab.size();
+      lerpedAverage = lerp(lerpedAverage, average, 0.15f);
+      println(lerpedAverage);
     
     }
   
