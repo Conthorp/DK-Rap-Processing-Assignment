@@ -11,21 +11,21 @@ PShape DonkeyKongText;
 void setup()
 {
   
-  size(512, 500, P3D);
+  fullScreen(P3D, 1);
+  frameRate(60);
+  colorMode(HSB, 360, 100, 100);
   
   DonkeyKong = loadShape("DonkeyKongHead.obj");
   DonkeyKongText = loadShape("DKtext.obj");
   
   minim = new Minim(this);
-  ap = minim.loadFile("Y2Mate.is - Donkey Kong 64 (N64) - DK Rap Introduction-npuuTBlEb1U-160k-1656653848268.mp3", frameSize);
-  ap.play();
+  ap = minim.loadFile("Y2Mate.is - Donkey Kong 64 (N64) - DK Rap Introduction-npuuTBlEb1U-160k-1656653848268.mp3", width);
   ab = ap.mix;
   colorMode(HSB);
   
 }
 
 //float ry;
-int frameSize = 512;
 Minim minim;
 AudioPlayer ap;
 AudioInput ai;
@@ -33,19 +33,35 @@ AudioBuffer ab;
 
 float headRotate = 0.0f;
 
+boolean start = false;
+boolean play = false;
+
+float countdown = 0;
+
 void keyPressed()
 {
+  
   if (key == ' ')
   {
+    
     if (ap.isPlaying())
     {
+      
       ap.pause();
+      play = false;
+      
     }
     else
     {
+      
       ap.play();
+      start = true;
+      play = true;
+
     }
+    
   }
+  
 }
 
 void Head()
@@ -62,7 +78,14 @@ void Head()
   scale((height / 100) * 3);
   shape(DonkeyKong);
   
-  headRotate += (PI / 45) * -1;
+  
+  if (play)
+  {
+    
+    headRotate += (PI / 45) * -1;
+    
+  }
+
   
   //ry += 0.05;
   popMatrix();
@@ -128,13 +151,69 @@ void Text4()
 void draw()
 {
   
-  background(0);
+  background(0, 0, 0);
   
-  Head();
   
-  Text1();
-  Text2();
-  Text3();
-  Text4();
+  if (start)
+  {
+    
+    if (countdown <= 170)
+    {
+      
+      if (play)
+      {
+        countdown += 1;
+      }
+      
+    }
+    else if (countdown <= 335)
+    {
+      
+      Text1();
+      Text2();
+      Text3();
+      Text4();
+      
+      if (play)
+      {
+        countdown += 1;
+      }
+      
+    }
+    else
+    {
+      
+      Head();
+  
+      Text1();
+      Text2();
+      Text3();
+      Text4();
+    
+    }
+  
+  }
+  else
+  {
+    
+    textAlign(CENTER);
+  
+    fill(120, 80, 90);
+    
+    textSize(78);
+  
+    text("WELCOME TO", width / 2, (height / 14) * 3);
+    text("THE DK RAP!!!", width / 2, (height / 14) * 4);
+    
+    textSize(90);
+    
+    text("PRESS 'SPACE' TO BEGIN", width / 2, (height / 14) * 8);
+  
+    textSize(40);
+    
+    text("(YOU CAN USE 'SPACE' TO PAUSE OR PLAY AT ANY TIME)", width / 2, (height / 14) * 12);
+    text("(TURN SOUND ON)", width / 2, (height / 14) * 13);
+    
+  }
   
 }
