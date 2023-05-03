@@ -8,6 +8,8 @@ import ddf.minim.ugens.*;
 PShape DonkeyKong;
 PShape DonkeyKongText;
 
+
+
 void setup()
 {
   
@@ -17,12 +19,17 @@ void setup()
   
   DonkeyKong = loadShape("DonkeyKongHead.obj");
   DonkeyKongText = loadShape("DKtext.obj");
+
   
   minim = new Minim(this);
   ai = minim.getLineIn(Minim.MONO, 512, 44100, 16);
   ap = minim.loadFile("Y2Mate.is - Donkey Kong 64 (N64) - DK Rap Introduction-npuuTBlEb1U-160k-1656653848268.mp3", width);
   ab = ap.mix;
   colorMode(HSB);
+  
+
+  
+  
   
 }
 
@@ -72,10 +79,15 @@ void Head()
 {
   
   pushMatrix();
-  
+
+
   lights();
-  translate(width / 2, (height * 6) / 10, -200);
+   directionalLight(1, 255, 255, width/2, (height * 6) / 10, 250);
+
+  translate(width / 2, (height * 6) / 10, 250);
   rotateZ(PI);
+  
+
 
   rotateY(headRotate);
   
@@ -155,7 +167,9 @@ void Text4()
 void draw()
 {
   
-  background(0, 0, 0);
+  background(140, 255, 20);
+  
+
   
 
   
@@ -168,6 +182,9 @@ void draw()
       if (play)
       {
         countdown += 1;
+        
+
+  
       }
       
     }
@@ -188,6 +205,27 @@ void draw()
     else
     {
       
+        fill(1, 50, 35);
+  rect(0, 0, 300, 1500);
+  
+  fill(1, 50, 15);
+  rect(300, 0, 300, 1500);
+  
+   fill(1, 54, 35);
+  rect(600, 0, 300, 1500);
+  
+    fill(60, 54, 255);
+  rect(900, 0, 300, 1500);
+  
+     fill(1, 255, 255);
+  rect(1200, 0, 300, 1500);
+  
+       fill(1, 70, 40);
+  rect(1500, 0, 300, 1500);
+  
+         fill(1, 70, 10);
+  rect(1800, 0, 300, 1500);
+      
       Head();
   
       Text1();
@@ -202,7 +240,11 @@ void draw()
     
         total += abs(ab.get(i));
     
+    
+    
       }
+      
+      
   
       average = total / (float) ab.size();
       lerpedAverage = lerp(lerpedAverage, average, 0.15f);
@@ -215,8 +257,11 @@ void draw()
   {
     
     textAlign(CENTER);
+    
   
     fill(120, 80, 90);
+    
+    
     
     textSize(78);
   
